@@ -1,0 +1,29 @@
+---
+title: "analysis"
+author: "Bruno Lavoie"
+date: "February 3, 2016"
+output: html_document
+---
+
+# Loading libraries
+
+```{r, echo=TRUE, results='hide', warning=FALSE, message=FALSE}
+library(ggplot2)
+library(dplyr)
+```
+
+
+# Download, load, and preprocess data
+
+```{r, echo=TRUE}
+
+if(!file.exists("./data")) {
+  file.url <- "https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2FStormData.csv.bz2"
+  dir.create("./data")
+  download.file(file.url, destfile="data/data.csv.bz2", method="curl")  
+  rm(file.url)
+}
+
+storm.data <- read.csv("./data/data.csv.bz2", stringsAsFactors = FALSE)
+
+```
