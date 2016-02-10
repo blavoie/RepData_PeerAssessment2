@@ -9,6 +9,12 @@ output: html_document
 
 This analysis explores severe weather events types and their impacts across the United States.
 
+Conclusions show that in USA in the period 1950 - 2011:
+
+- Tornado and high temperature the most dangerous for health
+- Floods and tornados (again) are most dangerous for economy
+
+
 # Introduction
 
 Storms and other severe weather events can cause both public health and economic problems for communities and municipalities. Many severe events can result in fatalities, injuries, and property damage, and preventing such outcomes to the extent possible is a key concern.
@@ -106,4 +112,27 @@ ggplot(top.injuries, aes(reorder(EVTYPE, INJURIES), INJURIES)) +
 ## With greatest economic consequences
 
 Economic side of disasters, represented by PROPDMG and CROPDMG numbers.
+
+Make aggregates.
+
+```{r}
+econ.agg <- storm.data %>% 
+  group_by(EVTYPE) %>%
+  summarize(PROPDMG = sum(PROPDMG), 
+            CROPDMG = sum(CROPDMG)) %>%
+  filter(PROPDMG  > 0 & CROPDMG > 0)
+
+top.prop <- econ.agg[order(econ.agg$PROPDMG, decreasing = TRUE)[1:10],]%>% 
+  select(EVTYPE, PROPDMG)
+
+top.crop   <- econ.agg[order(econ.agg$CROPDMG,   decreasing = TRUE)[1:10],] %>% 
+  select(EVTYPE, CROPDMG)
+```
+
+Show them.
+
+```{r}
+top.prop
+top.crop
+```
 
