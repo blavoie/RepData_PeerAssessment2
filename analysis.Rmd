@@ -65,9 +65,11 @@ For more information about the dataset and all metadata, please go to:
  - National Climatic Data Center Storm Events [FAQ](https://d396qusza40orc.cloudfront.net/repdata%2Fpeer2_doc%2FNCDC%20Storm%20Events-FAQ%20Page.pdf)
 
 
-# Most harmful events types
+# Results
 
-## With respect to population health
+Here we describe most harmful events types on health and economy.
+
+## Events with greatest population health consequences
 
 Health side of disasters, represented by FATALITIES and INJURIES numbers.
 
@@ -109,7 +111,7 @@ ggplot(top.injuries, aes(reorder(EVTYPE, INJURIES), INJURIES)) +
 ```
 
 
-## With greatest economic consequences
+## Events with greatest economic consequences
 
 Economic side of disasters, represented by PROPDMG and CROPDMG numbers.
 
@@ -129,7 +131,7 @@ top.crop   <- econ.agg[order(econ.agg$CROPDMG,   decreasing = TRUE)[1:10],] %>%
   select(EVTYPE, CROPDMG)
 ```
 
-Show them.
+Tabular results.
 
 ```{r}
 top.prop
