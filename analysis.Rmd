@@ -1,11 +1,23 @@
 ---
-title: "analysis"
+title: "NOAA Storm Data Analysis - Harmful Events"
 author: "Bruno Lavoie"
 date: "February 3, 2016"
 output: html_document
 ---
 
-# Loading libraries
+# Synopsis
+
+This analysis explores severe weather events types and their impacts across the United States.
+
+# Introduction
+
+Storms and other severe weather events can cause both public health and economic problems for communities and municipalities. Many severe events can result in fatalities, injuries, and property damage, and preventing such outcomes to the extent possible is a key concern.
+
+This project involves exploring the U.S. National Oceanic and Atmospheric Administration's (NOAA) storm database. This database tracks characteristics of major storms and weather events in the United States, including when and where they occur, as well as estimates of any fatalities, injuries, and property damage.
+
+# Loading packages
+
+We load packages that we'll use along the analysis. These must be installed for the report be reproductible.
 
 ```{r, echo=TRUE, results='hide', warning=FALSE, message=FALSE}
 library(ggplot2)
@@ -13,17 +25,48 @@ library(dplyr)
 ```
 
 
-# Download, load, and preprocess data
+# Data Processing
+
+We download data only if it doesn't exists yet. 
+Then, if the storm.data data frame doesn't exists, we load if from original data.
 
 ```{r, echo=TRUE}
-
 if(!file.exists("./data")) {
   file.url <- "https://d396qusza40orc.cloudfront.net/repdata%2Fdata%2FStormData.csv.bz2"
   dir.create("./data")
   download.file(file.url, destfile="data/data.csv.bz2", method="curl")  
   rm(file.url)
 }
-
-storm.data <- read.csv("./data/data.csv.bz2", stringsAsFactors = FALSE)
-
 ```
+
+Loading data, relatively long, so we enable cache for this snippet in R markdown. For standalone execution, we also check if data frame is not already loaded.
+```{r, echo=TRUE, cache=TRUE}
+if (!(exists('storm.data') && is.data.frame(storm.data))) {
+  storm.data <- read.csv("./data/data.csv.bz2", stringsAsFactors = FALSE)
+}
+```
+
+Looking at data, most important columns used for analysis are:
+
+ - FATALTIES : Number of fatalities caused by the events
+ - INJURIES : Number of people injured by the events
+ - PROPDMG : Amount of property loss by the events
+ - CROPDMG : Amount of crop damage by the weather
+
+For more information about the dataset and all metadata, please go to:
+ 
+ - National Weather Service [Storm Data Documentation](https://d396qusza40orc.cloudfront.net/repdata%2Fpeer2_doc%2Fpd01016005curr.pdf)
+ - National Climatic Data Center Storm Events [FAQ](https://d396qusza40orc.cloudfront.net/repdata%2Fpeer2_doc%2FNCDC%20Storm%20Events-FAQ%20Page.pdf)
+
+
+# Most harmful events types
+
+## With respect to population health
+
+Health side of disasters, represented by FATALITIES and INJURIES numbers.
+
+
+## With greatest economic consequences
+
+Economic side of disasters, represented by PROPDMG and CROPDMG numbers.
+
