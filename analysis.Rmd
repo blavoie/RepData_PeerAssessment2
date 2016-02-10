@@ -65,6 +65,43 @@ For more information about the dataset and all metadata, please go to:
 
 Health side of disasters, represented by FATALITIES and INJURIES numbers.
 
+Make aggregates.
+
+```{r}
+health.agg <- storm.data %>% 
+  group_by(EVTYPE) %>%
+  summarize(FATALITIES = sum(FATALITIES), INJURIES = sum(INJURIES)) %>%
+  filter(FATALITIES  > 0 & INJURIES > 0)
+
+top.fatalities <- health.agg[order(health.agg$FATALITIES, decreasing = TRUE)[1:10],]%>% 
+  select(EVTYPE, FATALITIES)
+
+top.injuries   <- health.agg[order(health.agg$INJURIES,   decreasing = TRUE)[1:10],] %>% 
+  select(EVTYPE, INJURIES)
+
+```
+
+
+Plot them.
+
+```{r}
+ggplot(top.fatalities, aes(reorder(EVTYPE, FATALITIES), FATALITIES)) + 
+  geom_bar(stat = "identity") + 
+  coord_flip() + 
+  xlab("Event type") +
+  ylab("Number of fatalities") +
+  labs(title= "Top 10 harmful events - Fatalities")
+```
+
+```{r}
+ggplot(top.injuries, aes(reorder(EVTYPE, INJURIES), INJURIES)) + 
+  geom_bar(stat = "identity") + 
+  coord_flip() + 
+  xlab("Event type") +
+  ylab("Number of injuries") +
+  labs(title= "Top 10 harmful events - Injuries")
+```
+
 
 ## With greatest economic consequences
 
